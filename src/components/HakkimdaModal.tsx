@@ -54,8 +54,7 @@ const HakkimdaModal: React.FC<HakkimdaModalProps> = ({ onClose }) => {
                     bölümün ilk mezunlarından biri olma onurunu yaşadım.
                   </p>
                   <p>
-                    Mezuniyetim sonrası mesleğime kısa bir ara vermiş olsam da, bugün
-                    yeniden tutkuyla bağlı olduğum yaylı çalgıların yapımı, onarımı ve
+                    Mezuniyetimin ardından, tutkuyla bağlı olduğum yaylı çalgıların yapımı, onarımı ve 
                     bakımına odaklanarak sanatımı icra etmeye devam ediyorum.
                   </p>
                 </div>

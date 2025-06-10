@@ -433,20 +433,23 @@ export default function Home() {
         </div>
         <div 
             onClick={scrollToCalgilar}
-            className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20 cursor-pointer flex flex-col items-center gap-2"
+            className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20 cursor-pointer group flex flex-col items-center gap-2"
             data-cursor-hover="true"
         >
-            <span className="text-sm font-serif text-accent tracking-widest">KEŞFET</span>
             <motion.div
-                animate={{ y: [0, 10, 0] }}
+                className="w-16 h-16 border-2 border-primary/50 rounded-full flex items-center justify-center group-hover:bg-primary/10 transition-colors duration-300"
+                animate={{ 
+                    scale: [1, 1.1, 1],
+                    opacity: [0.7, 1, 0.7]
+                }}
                 transition={{
-                    duration: 1.5,
+                    duration: 2.5,
                     repeat: Infinity,
                     repeatType: "loop",
                     ease: "easeInOut",
                 }}
             >
-                <FaArrowDown className="text-primary text-2xl" />
+                <FaArrowDown className="text-primary text-3xl transform group-hover:scale-110 transition-transform" />
             </motion.div>
         </div>
       </section>
