@@ -11,6 +11,7 @@ import HakkimdaModal from '@/components/HakkimdaModal';
 import ScrollToTopButton from '@/components/ScrollToTopButton';
 import InstagramPost from '@/components/InstagramPost';
 import { ChevronUp, Mail, Instagram as InstagramIcon } from "lucide-react";
+import { FaArrowDown } from 'react-icons/fa';
 
 interface AlbumData {
   name: string;
@@ -267,6 +268,8 @@ export default function Home() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const calgilarRef = useRef<HTMLElement>(null);
+
   const instagramPosts = [
     {
       videoSrc: '/videos/2024_Messiah.mp4',
@@ -324,6 +327,10 @@ export default function Home() {
     visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } },
   };
 
+  const scrollToCalgilar = () => {
+    calgilarRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   const handleFormChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
@@ -360,7 +367,7 @@ export default function Home() {
   return (
     <>
       {/* Hero Section */}
-      <section ref={heroRef} id="home" className="grid grid-cols-1 md:grid-cols-2 min-h-screen bg-background">
+      <section ref={heroRef} id="home" className="grid grid-cols-1 md:grid-cols-2 min-h-screen bg-background relative">
         <div className="flex flex-col items-center justify-center p-8 md:p-16 text-center z-10">
           <motion.h1 
             className="text-5xl lg:text-7xl font-serif text-primary leading-tight mb-4"
@@ -424,10 +431,29 @@ export default function Home() {
               />
             </motion.div>
         </div>
+        <div 
+            onClick={scrollToCalgilar}
+            className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20 cursor-pointer flex flex-col items-center gap-2"
+            data-cursor-hover="true"
+        >
+            <span className="text-sm font-serif text-accent tracking-widest">KEŞFET</span>
+            <motion.div
+                animate={{ y: [0, 10, 0] }}
+                transition={{
+                    duration: 1.5,
+                    repeat: Infinity,
+                    repeatType: "loop",
+                    ease: "easeInOut",
+                }}
+            >
+                <FaArrowDown className="text-primary text-2xl" />
+            </motion.div>
+        </div>
       </section>
       
       {/* Gallery Section */}
       <motion.section 
+        ref={calgilarRef}
         id="calgilar" 
         className="bg-surface py-20 md:py-32 relative z-20"
         initial={{ opacity: 0, y: 50 }}
