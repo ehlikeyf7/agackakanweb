@@ -390,19 +390,23 @@ export default function Home() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 1 }}
-            className="flex flex-wrap justify-center gap-4 md:gap-6"
+            className="flex flex-wrap justify-center gap-x-6 md:gap-x-8 gap-y-2"
           >
-            <Link href="/#calgilar" data-cursor-hover="true" className="text-accent hover:text-primary transition-colors duration-300 text-lg py-2 px-4 focusable rounded-md">
-              Çalgılar
+            <Link href="/#calgilar" data-cursor-hover="true" className="relative text-accent hover:text-primary transition-colors duration-300 text-lg group py-2 focusable">
+              <span>Çalgılar</span>
+              <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out origin-left"></span>
             </Link>
-            <button onClick={() => setIsHakkimdaOpen(true)} data-cursor-hover="true" className="text-accent hover:text-primary transition-colors duration-300 text-lg py-2 px-4 focusable rounded-md">
-              Hakkımda
+            <button onClick={() => setIsHakkimdaOpen(true)} data-cursor-hover="true" className="relative text-accent hover:text-primary transition-colors duration-300 text-lg group py-2 focusable">
+              <span>Hakkımda</span>
+              <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out origin-left"></span>
             </button>
-            <Link href="/#iletisim" data-cursor-hover="true" className="text-accent hover:text-primary transition-colors duration-300 text-lg py-2 px-4 focusable rounded-md">
-              İletişim
+            <Link href="/#iletisim" data-cursor-hover="true" className="relative text-accent hover:text-primary transition-colors duration-300 text-lg group py-2 focusable">
+              <span>İletişim</span>
+              <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out origin-left"></span>
             </Link>
-            <a href="https://www.instagram.com/atolye_agackakann/" data-cursor-hover="true" target="_blank" rel="noopener noreferrer" className="text-accent hover:text-primary transition-colors duration-300 text-lg py-2 px-4 focusable rounded-md">
-              Instagram
+            <a href="https://www.instagram.com/atolye_agackakann/" data-cursor-hover="true" target="_blank" rel="noopener noreferrer" className="relative text-accent hover:text-primary transition-colors duration-300 text-lg group py-2 focusable">
+              <span>Instagram</span>
+              <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out origin-left"></span>
             </a>
           </motion.div>
         </div>
