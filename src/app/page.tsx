@@ -360,8 +360,8 @@ export default function Home() {
   return (
     <>
       {/* Hero Section */}
-      <section ref={heroRef} id="home" className="grid grid-cols-1 md:grid-cols-2 min-h-screen bg-background">
-        <div className="flex flex-col justify-center p-8 md:p-16 text-center md:text-left z-10">
+      <section id="home" className="flex items-center justify-center min-h-screen bg-background text-center p-4">
+        <div className="z-10">
           <motion.h1 
             className="text-5xl lg:text-7xl font-serif text-primary leading-tight mb-4"
             variants={titleContainerVariants}
@@ -382,7 +382,7 @@ export default function Home() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.8 }}
-            className="text-lg lg:text-xl mb-8 max-w-lg mx-auto md:mx-0 text-text-secondary"
+            className="text-lg lg:text-xl mb-8 max-w-2xl mx-auto text-text-secondary"
           >
             Geleneksel el işçiliği ve modern estetiğin buluştuğu, tınısı ve karakteriyle eşsiz yaylı enstrümanlar.
           </motion.p>
@@ -390,7 +390,7 @@ export default function Home() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 1 }}
-            className="flex flex-wrap justify-center md:justify-start gap-4 md:gap-6"
+            className="flex flex-wrap justify-center gap-4 md:gap-6"
           >
             <Link href="/#calgilar" data-cursor-hover="true" className="text-accent hover:text-primary transition-colors duration-300 text-lg py-2 px-4 focusable rounded-md">
               Çalgılar
@@ -405,20 +405,6 @@ export default function Home() {
               Instagram
             </a>
           </motion.div>
-        </div>
-        <div className="relative min-h-[50vh] md:min-h-screen overflow-hidden">
-            <motion.div 
-              className="absolute inset-0"
-              style={{ y: parallaxY }}
-            >
-              <Image 
-                  src="/images/dut_keman/IMG_1767.JPG"
-                  alt="Atölye Ağaçkakan el yapımı dut keman"
-                  fill
-                  style={{ objectFit: 'cover' }}
-                  priority
-              />
-            </motion.div>
         </div>
       </section>
       
