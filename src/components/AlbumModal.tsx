@@ -103,8 +103,14 @@ const AlbumModal: React.FC<AlbumModalProps> = ({ album, onClose }) => {
             exit={{ backgroundColor: 'rgba(0, 0, 0, 0)' }}
             className="fixed inset-0 flex justify-center items-center z-[100] p-4"
             onClick={() => setSelectedMedia(null)}
-            data-cursor-hover="true"
           >
+            <button 
+              onClick={() => setSelectedMedia(null)}
+              className="absolute top-4 right-4 text-white text-4xl bg-black/30 rounded-full w-12 h-12 flex items-center justify-center z-10 hover:bg-black/60 transition-colors focusable"
+              aria-label="Kapat"
+            >
+              &times;
+            </button>
             <motion.div
               layoutId={selectedMedia}
               className="relative w-auto h-auto max-w-[95vw] max-h-[95vh] rounded-lg shadow-2xl overflow-hidden"
