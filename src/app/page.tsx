@@ -562,9 +562,9 @@ export default function Home() {
               </motion.div>
             </motion.div>
           ) : (
-            <div className="flex flex-wrap justify-center gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
               {instagramPosts.map((post, index) => (
-                <div key={index} className="w-full max-w-sm sm:w-[calc(50%-1rem)] lg:w-[calc(25%-1.5rem)] flex-shrink-0">
+                <div key={index} className="w-full">
                   <InstagramPost
                     videoSrc={post.videoSrc}
                     imageSrc={post.imageSrc}
