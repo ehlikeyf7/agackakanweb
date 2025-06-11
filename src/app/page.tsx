@@ -291,7 +291,10 @@ export default function Home() {
       description: "Cila Aşaması"
     },
     {
-      imageSrc: '/images/yapim_asamasi/NFJK6531.JPG',
+      imageSrc: [
+        '/images/yapim_asamasi/NFJK6531.JPG',
+        '/images/yapim_asamasi/8495239_n.jpg'
+      ],
       postUrl: 'https://www.instagram.com/atolye_agackakann/',
       description: "Arşe Kıl Değişimi ve Topuk Tamiri"
     },
