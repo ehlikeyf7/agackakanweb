@@ -274,7 +274,7 @@ export default function Home() {
   const instagramPosts = [
     {
       videoSrc: '/videos/2024_Messiah.mp4',
-      posterSrc: '/videos/posters/2024_Messiah.jpg',
+      posterSrc: '/images/2024_messiah/1.png',
       postUrl: 'https://www.instagram.com/atolye_agackakann/',
       description: "2024 'Messiah' Kemanı"
     },
