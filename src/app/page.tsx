@@ -267,6 +267,7 @@ export default function Home() {
     message: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   const calgilarRef = useRef<HTMLElement>(null);
 
@@ -301,12 +302,21 @@ export default function Home() {
     };
   }, [selectedAlbum, isHakkimdaOpen]);
 
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768); // 768px is md breakpoint in Tailwind
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
   const heroRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: heroRef,
     offset: ['start start', 'end start'],
   });
-  const parallaxY = useTransform(scrollYProgress, [0, 1], ['0%', '50%']);
+  const parallaxY = useTransform(scrollYProgress, [0, 1], isMobile ? ['0%', '0%'] : ['0%', '50%']);
 
   const title = "Atölye Ağaçkakan";
   const titleWords = title.split(" ");
@@ -417,7 +427,7 @@ export default function Home() {
             </a>
           </motion.div>
         </div>
-        <div className="relative min-h-[50vh] md:min-h-screen overflow-hidden">
+        <div className="relative h-[60vh] md:h-screen overflow-hidden">
             <motion.div 
               className="absolute inset-0"
               style={{ y: parallaxY }}
