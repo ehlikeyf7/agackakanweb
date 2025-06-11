@@ -57,7 +57,7 @@ const InstagramPost = ({ videoSrc, imageSrc, postUrl, username, description, isM
 
   return (
     <div 
-      className="flex flex-col h-full bg-surface/50 rounded-lg overflow-hidden shadow-lg transition-transform duration-300 ease-in-out hover:scale-105 hover:shadow-2xl border border-accent/10"
+      className="flex flex-col h-full w-full bg-surface/50 rounded-lg overflow-hidden shadow-lg transition-transform duration-300 ease-in-out hover:scale-105 hover:shadow-2xl border border-accent/10"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
