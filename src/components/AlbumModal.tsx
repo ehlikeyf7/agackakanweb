@@ -1,11 +1,11 @@
 "use client";
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import ImageWithSkeleton from './ImageWithSkeleton';
 import ScrollToTopButton from './ScrollToTopButton';
-import { PlayCircle } from 'lucide-react';
+import { PlayCircle, ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface Album {
   name: string;
@@ -18,13 +18,45 @@ interface AlbumModalProps {
   onClose: () => void;
 }
 
+const variants = {
+  enter: (direction: number) => ({
+    x: direction > 0 ? '100%' : '-100%',
+    opacity: 0,
+  }),
+  center: {
+    x: 0,
+    opacity: 1,
+  },
+  exit: (direction: number) => ({
+    x: direction < 0 ? '100%' : '-100%',
+    opacity: 0,
+  }),
+};
+
+const swipeConfidenceThreshold = 10000;
+const swipePower = (offset: number, velocity: number) => {
+  return Math.abs(offset) * velocity;
+};
+
 const AlbumModal: React.FC<AlbumModalProps> = ({ album, onClose }) => {
-  const [selectedMedia, setSelectedMedia] = useState<string | null>(null);
+  const [[page, direction], setPage] = useState([0, 0]);
+  const [selectedMediaIndex, setSelectedMediaIndex] = useState<number | null>(null);
   const modalRef = useRef(null);
 
-  const isVideo = (path: string) => {
-    return path.toLowerCase().endsWith('.mov') || path.toLowerCase().endsWith('.mp4');
+  const paginate = (newDirection: number) => {
+    if (selectedMediaIndex === null) return;
+    const newIndex = selectedMediaIndex + newDirection;
+    if (newIndex >= 0 && newIndex < album.images.length) {
+      setPage([newIndex, newDirection]);
+      setSelectedMediaIndex(newIndex);
+    }
   };
+
+  const isVideo = (path: string) => {
+    return path?.toLowerCase().endsWith('.mov') || path?.toLowerCase().endsWith('.mp4');
+  };
+
+  const selectedMedia = selectedMediaIndex !== null ? album.images[selectedMediaIndex] : null;
 
   return (
     <>
@@ -42,7 +74,7 @@ const AlbumModal: React.FC<AlbumModalProps> = ({ album, onClose }) => {
       >
         <motion.div
           initial={{ y: "100vh" }}
-          animate={{ y: 0, opacity: selectedMedia ? 0 : 1 }}
+          animate={{ y: 0, opacity: selectedMediaIndex !== null ? 0 : 1 }}
           exit={{ y: "100vh" }}
           transition={{ type: 'spring', stiffness: 200, damping: 25, opacity: { duration: 0.2 } }}
           className="relative bg-surface min-h-screen"
@@ -58,9 +90,9 @@ const AlbumModal: React.FC<AlbumModalProps> = ({ album, onClose }) => {
                   layoutId={media}
                   data-cursor-hover="true"
                   className="bg-background rounded-lg shadow-lg overflow-hidden cursor-pointer group focusable relative aspect-square"
-                  onClick={() => setSelectedMedia(media)}
+                  onClick={() => setSelectedMediaIndex(index)}
                   tabIndex={0}
-                  onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setSelectedMedia(media) }}
+                  onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setSelectedMediaIndex(index) }}
                 >
                   {isVideo(media) ? (
                     <>
@@ -86,7 +118,7 @@ const AlbumModal: React.FC<AlbumModalProps> = ({ album, onClose }) => {
         <motion.button
           onClick={onClose}
           data-cursor-hover="true"
-          animate={{ opacity: selectedMedia ? 0 : 1, transition: { duration: 0.2 } }}
+          animate={{ opacity: selectedMediaIndex !== null ? 0 : 1, transition: { duration: 0.2 } }}
           className="absolute top-5 right-5 bg-background/50 rounded-full text-text-primary text-3xl w-12 h-12 flex items-center justify-center font-bold hover:bg-primary hover:text-white transition z-[60] focusable"
           aria-label="Close"
           whileHover={{ scale: 1.1, rotate: 90 }}
@@ -95,21 +127,39 @@ const AlbumModal: React.FC<AlbumModalProps> = ({ album, onClose }) => {
         </motion.button>
       </motion.div>
 
-      <AnimatePresence>
+      <AnimatePresence initial={false} custom={direction}>
         {selectedMedia && (
           <motion.div
-            initial={{ backgroundColor: 'rgba(0, 0, 0, 0)' }}
-            animate={{ backgroundColor: 'rgba(0, 0, 0, 0.8)' }}
-            exit={{ backgroundColor: 'rgba(0, 0, 0, 0)' }}
-            className="fixed inset-0 flex justify-center items-center z-[100] p-4"
-            onClick={() => setSelectedMedia(null)}
+            key={page}
+            custom={direction}
+            variants={variants}
+            initial="enter"
+            animate="center"
+            exit="exit"
+            transition={{
+                x: { type: "spring", stiffness: 300, damping: 30 },
+                opacity: { duration: 0.2 }
+            }}
+            drag="x"
+            dragConstraints={{ left: 0, right: 0 }}
+            dragElastic={1}
+            onDragEnd={(e, { offset, velocity }) => {
+              const swipe = swipePower(offset.x, velocity.x);
+              if (swipe < -swipeConfidenceThreshold) {
+                paginate(1);
+              } else if (swipe > swipeConfidenceThreshold) {
+                paginate(-1);
+              }
+            }}
+            className="fixed inset-0 flex justify-center items-center z-[100] p-4 bg-black/80"
+            onClick={() => setSelectedMediaIndex(null)}
           >
-            <button 
-              onClick={() => setSelectedMedia(null)}
-              className="absolute top-4 right-4 text-white text-4xl bg-black/30 rounded-full w-12 h-12 flex items-center justify-center z-10 hover:bg-black/60 transition-colors focusable"
-              aria-label="Kapat"
+             <button
+              onClick={(e) => { e.stopPropagation(); paginate(-1); }}
+              className="absolute left-2 md:left-5 top-1/2 -translate-y-1/2 z-[110] bg-white/10 hover:bg-white/20 p-2 rounded-full text-white focusable transition"
+              disabled={selectedMediaIndex === 0}
             >
-              &times;
+              <ChevronLeft size={24} />
             </button>
             <motion.div
               layoutId={selectedMedia}
@@ -122,6 +172,20 @@ const AlbumModal: React.FC<AlbumModalProps> = ({ album, onClose }) => {
                 <Image src={selectedMedia} alt="Büyük boy enstrüman fotoğrafı" width={1600} height={1000} className="w-auto h-auto max-w-full max-h-[95vh] rounded-lg" />
               )}
             </motion.div>
+             <button
+              onClick={(e) => { e.stopPropagation(); paginate(1); }}
+              className="absolute right-2 md:right-5 top-1/2 -translate-y-1/2 z-[110] bg-white/10 hover:bg-white/20 p-2 rounded-full text-white focusable transition"
+              disabled={selectedMediaIndex === album.images.length - 1}
+            >
+              <ChevronRight size={24} />
+            </button>
+            <button
+              onClick={() => setSelectedMediaIndex(null)}
+              className="absolute top-2 right-2 md:top-4 md:right-4 text-white text-4xl bg-black/30 rounded-full w-10 h-10 flex items-center justify-center z-[110] hover:bg-black/60 transition-colors focusable"
+              aria-label="Kapat"
+            >
+              &times;
+            </button>
           </motion.div>
         )}
       </AnimatePresence>

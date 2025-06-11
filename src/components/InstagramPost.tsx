@@ -9,9 +9,10 @@ interface InstagramPostProps {
   username: string;
   description: string;
   isMobile?: boolean;
+  posterSrc?: string;
 }
 
-const InstagramPost = ({ videoSrc, postUrl, username, description, isMobile = false }: InstagramPostProps) => {
+const InstagramPost = ({ videoSrc, postUrl, username, description, isMobile = false, posterSrc }: InstagramPostProps) => {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const handleMouseEnter = () => {
@@ -80,6 +81,7 @@ const InstagramPost = ({ videoSrc, postUrl, username, description, isMobile = fa
           loop
           muted
           playsInline
+          poster={posterSrc}
           className="w-full h-full object-cover"
         />
       </a>

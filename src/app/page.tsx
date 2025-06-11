@@ -274,16 +274,19 @@ export default function Home() {
   const instagramPosts = [
     {
       videoSrc: '/videos/2024_Messiah.mp4',
+      posterSrc: '/videos/posters/2024_Messiah.jpg',
       postUrl: 'https://www.instagram.com/atolye_agackakann/',
       description: "2024 'Messiah' Kemanı"
     },
     {
       videoSrc: '/videos/Restorasyon.mp4',
+      posterSrc: '/videos/posters/Restorasyon.jpg',
       postUrl: 'https://www.instagram.com/atolye_agackakann/',
       description: "Restorasyon Süreci"
     },
     {
       videoSrc: '/videos/Varnish.mp4',
+      posterSrc: '/videos/posters/Varnish.jpg',
       postUrl: 'https://www.instagram.com/atolye_agackakann/',
       description: "Cila Aşaması"
     },
@@ -543,6 +546,7 @@ export default function Home() {
                     <InstagramPost
                       isMobile
                       videoSrc={post.videoSrc}
+                      posterSrc={post.posterSrc}
                       postUrl={post.postUrl}
                       username="atolye_agackakan"
                       description={post.description}
@@ -557,6 +561,7 @@ export default function Home() {
                 <div key={index} className="w-full max-w-sm sm:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.5rem)] flex-shrink-0">
                   <InstagramPost
                     videoSrc={post.videoSrc}
+                    posterSrc={post.posterSrc}
                     postUrl={post.postUrl}
                     username="atolye_agackakan"
                     description={post.description}
