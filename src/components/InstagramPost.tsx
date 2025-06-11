@@ -6,7 +6,6 @@ import Image from 'next/image';
 
 interface InstagramPostProps {
   videoSrc?: string;
-  imageSrc?: string | string[];
   postUrl: string;
   username: string;
   description: string;
@@ -14,7 +13,7 @@ interface InstagramPostProps {
   posterSrc?: string;
 }
 
-const InstagramPost = ({ videoSrc, imageSrc, postUrl, username, description, isMobile = false, posterSrc }: InstagramPostProps) => {
+const InstagramPost = ({ videoSrc, postUrl, username, description, isMobile = false, posterSrc }: InstagramPostProps) => {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const handleMouseEnter = () => {
@@ -77,7 +76,7 @@ const InstagramPost = ({ videoSrc, imageSrc, postUrl, username, description, isM
       
       {/* Video or Image */}
       <a href={postUrl} target="_blank" rel="noopener noreferrer" className="block cursor-pointer aspect-square relative bg-black">
-        {videoSrc ? (
+        {videoSrc && (
           <video
             ref={videoRef}
             src={videoSrc}
@@ -87,31 +86,7 @@ const InstagramPost = ({ videoSrc, imageSrc, postUrl, username, description, isM
             poster={posterSrc}
             className="w-full h-full object-cover"
           />
-        ) : imageSrc ? (
-            Array.isArray(imageSrc) ? (
-                <div className="flex flex-col h-full w-full">
-                    {imageSrc.map((src) => (
-                        <div key={src} className="relative flex-1">
-                        <Image
-                            src={src}
-                            alt={description}
-                            fill
-                            style={{ objectFit: 'cover' }}
-                            sizes="(max-width: 768px) 300px, 25vw"
-                        />
-                        </div>
-                    ))}
-                </div>
-            ) : (
-                <Image
-                    src={imageSrc}
-                    alt={description}
-                    fill
-                    style={{ objectFit: 'cover' }}
-                    sizes="(max-width: 768px) 300px, 25vw"
-                />
-            )
-        ) : null}
+        )}
       </a>
 
       {/* Footer Icons & Description */}

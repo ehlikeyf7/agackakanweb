@@ -290,14 +290,6 @@ export default function Home() {
       postUrl: 'https://www.instagram.com/atolye_agackakann/',
       description: "Cila Aşaması"
     },
-    {
-      imageSrc: [
-        '/images/yapim_asamasi/NFJK6531.JPG',
-        '/images/yapim_asamasi/8495239_n.jpg'
-      ],
-      postUrl: 'https://www.instagram.com/atolye_agackakann/',
-      description: "Arşe Kıl Değişimi ve Topuk Tamiri"
-    },
   ];
 
   useEffect(() => {
@@ -554,7 +546,6 @@ export default function Home() {
                     <InstagramPost
                       isMobile
                       videoSrc={post.videoSrc}
-                      imageSrc={post.imageSrc}
                       posterSrc={post.posterSrc}
                       postUrl={post.postUrl}
                       username="atolye_agackakann"
@@ -565,15 +556,14 @@ export default function Home() {
               </motion.div>
             </motion.div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
               {instagramPosts.map((post, index) => (
                 <div key={index} className="flex">
                   <InstagramPost
                     videoSrc={post.videoSrc}
-                    imageSrc={post.imageSrc}
                     posterSrc={post.posterSrc}
                     postUrl={post.postUrl}
-                    username="atolye_agackakan"
+                    username="atolye_agackakann"
                     description={post.description}
                   />
                 </div>
