@@ -501,20 +501,45 @@ export default function Home() {
         <div className="container mx-auto px-6">
           <h2 className="text-3xl md:text-4xl font-serif text-center text-primary mb-12">Atölyeden Anlar</h2>
           {isMobile ? (
-            <motion.div className="relative overflow-hidden w-full h-[450px]">
+            <motion.div 
+              className="relative overflow-hidden w-full h-[450px]"
+              onHoverStart={(e) => {
+                const target = e.target as HTMLElement;
+                const marquee = target.closest('.flex');
+                if (marquee) {
+                  // Here we would pause the animation, which requires a more complex setup with useAnimation controls
+                }
+              }}
+               onHoverEnd={(e) => {
+                const target = e.target as HTMLElement;
+                const marquee = target.closest('.flex');
+                if (marquee) {
+                  // Here we would resume the animation
+                }
+              }}
+            >
               <motion.div
                 className="flex gap-4 absolute"
                 animate={{
                   x: ['0%', '-50%'],
-                  transition: {
-                    ease: 'linear',
-                    duration: 30,
-                    repeat: Infinity,
-                  },
                 }}
+                transition={{
+                  ease: 'linear',
+                  duration: 30,
+                  repeat: Infinity,
+                }}
+                onHoverStart={ (e) => (e.target as HTMLElement).style.animationPlayState = 'paused' }
+                onHoverEnd={ (e) => (e.target as HTMLElement).style.animationPlayState = 'running' }
               >
                 {[...instagramPosts, ...instagramPosts].map((post, index) => (
-                  <div key={index} className="w-[300px] h-full flex-shrink-0">
+                  <div key={index} className="w-[300px] h-full flex-shrink-0"
+                    onTouchStart={(e) => {
+                        if(e.currentTarget.parentElement) e.currentTarget.parentElement.style.animationPlayState = 'paused'
+                    }}
+                    onTouchEnd={(e) => {
+                        if(e.currentTarget.parentElement) e.currentTarget.parentElement.style.animationPlayState = 'running'
+                    }}
+                  >
                     <InstagramPost
                       isMobile
                       videoSrc={post.videoSrc}
