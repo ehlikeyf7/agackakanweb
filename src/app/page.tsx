@@ -432,7 +432,7 @@ export default function Home() {
         </div>
         <div className="relative h-[60vh] md:h-screen overflow-hidden">
             <motion.div 
-              className="absolute inset-0"
+              className="absolute inset-0 h-[150%] top-[-25%]"
               style={{ y: parallaxY }}
             >
               <Image 
@@ -471,15 +471,15 @@ export default function Home() {
       <motion.section 
         ref={calgilarRef}
         id="calgilar" 
-        className="bg-surface py-20 md:py-32 relative z-20"
+        className="bg-surface py-16 md:py-24 relative z-20"
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.2 }}
         transition={{ duration: 0.8 }}
       >
-        <div className="container mx-auto px-6">
-          <h2 className="text-3xl md:text-4xl font-serif text-center text-primary mb-12">Çalgılar</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
+        <div className="container mx-auto px-6 md:px-16 lg:px-24">
+          <h2 className="text-3xl md:text-4xl font-serif text-center text-primary mb-10">Çalgılar</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10">
             {albums.map((album) => (
               <AlbumCover
                 key={album.name}
@@ -495,14 +495,14 @@ export default function Home() {
       {/* Instagram Section */}
       <motion.section 
         id="instagram" 
-        className="bg-background py-20 md:py-32"
+        className="bg-background py-16 md:py-24"
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.2 }}
         transition={{ duration: 0.8 }}
       >
         <div className="container mx-auto px-6">
-          <h2 className="text-3xl md:text-4xl font-serif text-center text-primary mb-12">Atölyeden Anlar</h2>
+          <h2 className="text-3xl md:text-4xl font-serif text-center text-primary mb-10">Atölyeden Anlar</h2>
           {isMobile ? (
             <motion.div 
               className="relative overflow-hidden w-full h-[450px]"
@@ -588,17 +588,17 @@ export default function Home() {
       {/* İletişim Section */}
       <motion.section 
         id="iletisim" 
-        className="bg-surface py-20 md:py-32"
+        className="bg-surface py-16 md:py-24"
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.2 }}
         transition={{ duration: 0.8 }}
       >
         <div className="container mx-auto px-6 text-center">
-          <h2 className="text-3xl md:text-4xl font-serif text-center text-primary mb-12">İletişim</h2>
+          <h2 className="text-3xl md:text-4xl font-serif text-center text-primary mb-10">İletişim</h2>
           <div className="max-w-3xl mx-auto bg-background p-8 md:p-12 rounded-lg shadow-xl">
             <form onSubmit={handleFormSubmit}>
-              <div className="mb-6">
+              <div className="mb-4">
                 <label className="block text-text-primary text-sm font-bold mb-2" htmlFor="name">Adınız Soyadınız</label>
                 <input 
                   className="shadow-inner appearance-none border border-accent/20 rounded w-full py-3 px-4 bg-background text-text-primary leading-tight focus:outline-none focus:ring-2 focus:ring-accent" 
@@ -611,7 +611,7 @@ export default function Home() {
                   required 
                 />
               </div>
-              <div className="mb-6">
+              <div className="mb-4">
                 <label className="block text-text-primary text-sm font-bold mb-2" htmlFor="email">E-posta Adresiniz</label>
                 <input 
                   className="shadow-inner appearance-none border border-accent/20 rounded w-full py-3 px-4 bg-background text-text-primary leading-tight focus:outline-none focus:ring-2 focus:ring-accent" 
@@ -624,7 +624,7 @@ export default function Home() {
                   required
                 />
               </div>
-              <div className="mb-8">
+              <div className="mb-6">
                 <label className="block text-text-primary text-sm font-bold mb-2" htmlFor="message">Mesajınız</label>
                 <textarea 
                   className="shadow-inner appearance-none border border-accent/20 rounded w-full py-3 px-4 bg-background text-text-primary leading-tight focus:outline-none focus:ring-2 focus:ring-accent h-40" 
