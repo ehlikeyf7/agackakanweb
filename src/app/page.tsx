@@ -500,20 +500,45 @@ export default function Home() {
       >
         <div className="container mx-auto px-6">
           <h2 className="text-3xl md:text-4xl font-serif text-center text-primary mb-12">Atölyeden Anlar</h2>
-          <div 
-            className="flex flex-wrap justify-center gap-8"
-          >
-            {instagramPosts.map((post, index) => (
-              <div key={index} className="w-full max-w-sm sm:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.5rem)] flex-shrink-0">
+          {isMobile ? (
+            <motion.div className="relative overflow-hidden w-full h-[450px]">
+              <motion.div
+                className="flex gap-4 absolute"
+                animate={{
+                  x: ['0%', '-100%'],
+                  transition: {
+                    ease: 'linear',
+                    duration: 20,
+                    repeat: Infinity,
+                  },
+                }}
+              >
+                {[...instagramPosts, ...instagramPosts].map((post, index) => (
+                  <div key={index} className="w-[300px] flex-shrink-0">
+                    <InstagramPost
+                      videoSrc={post.videoSrc}
+                      postUrl={post.postUrl}
+                      username="atolye_agackakan"
+                      description={post.description}
+                    />
+                  </div>
+                ))}
+              </motion.div>
+            </motion.div>
+          ) : (
+            <div className="flex flex-wrap justify-center gap-8">
+              {instagramPosts.map((post, index) => (
+                <div key={index} className="w-full max-w-sm sm:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.5rem)] flex-shrink-0">
                   <InstagramPost
                     videoSrc={post.videoSrc}
                     postUrl={post.postUrl}
                     username="atolye_agackakan"
                     description={post.description}
                   />
-              </div>
-            ))}
-          </div>
+                </div>
+              ))}
+            </div>
+          )}
           <div className="text-center mt-12">
             <a 
               href="https://www.instagram.com/atolye_agackakann/" 
