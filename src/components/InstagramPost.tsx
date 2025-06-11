@@ -2,9 +2,11 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { Instagram, Heart, MessageCircle, Send } from 'lucide-react';
+import Image from 'next/image';
 
 interface InstagramPostProps {
-  videoSrc: string;
+  videoSrc?: string;
+  imageSrc?: string;
   postUrl: string;
   username: string;
   description: string;
@@ -12,7 +14,7 @@ interface InstagramPostProps {
   posterSrc?: string;
 }
 
-const InstagramPost = ({ videoSrc, postUrl, username, description, isMobile = false, posterSrc }: InstagramPostProps) => {
+const InstagramPost = ({ videoSrc, imageSrc, postUrl, username, description, isMobile = false, posterSrc }: InstagramPostProps) => {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const handleMouseEnter = () => {
@@ -73,17 +75,27 @@ const InstagramPost = ({ videoSrc, postUrl, username, description, isMobile = fa
         </div>
       </div>
       
-      {/* Video */}
+      {/* Video or Image */}
       <a href={postUrl} target="_blank" rel="noopener noreferrer" className="block cursor-pointer aspect-square relative bg-black">
-        <video
-          ref={videoRef}
-          src={videoSrc}
-          loop
-          muted
-          playsInline
-          poster={posterSrc}
-          className="w-full h-full object-cover"
-        />
+        {videoSrc ? (
+          <video
+            ref={videoRef}
+            src={videoSrc}
+            loop
+            muted
+            playsInline
+            poster={posterSrc}
+            className="w-full h-full object-cover"
+          />
+        ) : imageSrc ? (
+          <Image
+            src={imageSrc}
+            alt={description}
+            fill
+            style={{ objectFit: 'cover' }}
+            sizes="(max-width: 768px) 300px, 33vw"
+          />
+        ) : null}
       </a>
 
       {/* Footer Icons & Description */}

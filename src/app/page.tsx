@@ -290,6 +290,11 @@ export default function Home() {
       postUrl: 'https://www.instagram.com/atolye_agackakann/',
       description: "Cila Aşaması"
     },
+    {
+      imageSrc: '/images/yapim_asamasi/NFJK6531.JPG',
+      postUrl: 'https://www.instagram.com/atolye_agackakann/',
+      description: "Arşe Kıl Değişimi ve Topuk Tamiri"
+    },
   ];
 
   useEffect(() => {
@@ -546,9 +551,10 @@ export default function Home() {
                     <InstagramPost
                       isMobile
                       videoSrc={post.videoSrc}
+                      imageSrc={post.imageSrc}
                       posterSrc={post.posterSrc}
                       postUrl={post.postUrl}
-                      username="atolye_agackakan"
+                      username="atolye_agackakann"
                       description={post.description}
                     />
                   </div>
@@ -561,6 +567,7 @@ export default function Home() {
                 <div key={index} className="w-full max-w-sm sm:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.5rem)] flex-shrink-0">
                   <InstagramPost
                     videoSrc={post.videoSrc}
+                    imageSrc={post.imageSrc}
                     posterSrc={post.posterSrc}
                     postUrl={post.postUrl}
                     username="atolye_agackakan"
