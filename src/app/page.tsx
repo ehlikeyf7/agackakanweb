@@ -280,13 +280,11 @@ export default function Home() {
     },
     {
       videoSrc: '/videos/Restorasyon.mp4',
-      posterSrc: '/videos/posters/Restorasyon.jpg',
       postUrl: 'https://www.instagram.com/atolye_agackakann/',
       description: "Restorasyon Süreci"
     },
     {
       videoSrc: '/videos/Varnish.mp4',
-      posterSrc: '/videos/posters/Varnish.jpg',
       postUrl: 'https://www.instagram.com/atolye_agackakann/',
       description: "Cila Aşaması"
     },
@@ -471,15 +469,15 @@ export default function Home() {
       <motion.section 
         ref={calgilarRef}
         id="calgilar" 
-        className="bg-surface py-16 md:py-24 relative z-20"
+        className="bg-surface py-12 md:py-20 relative z-20"
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.2 }}
         transition={{ duration: 0.8 }}
       >
-        <div className="container mx-auto px-6 md:px-16 lg:px-24">
-          <h2 className="text-3xl md:text-4xl font-serif text-center text-primary mb-10">Çalgılar</h2>
-          <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10">
+        <div className="container mx-auto px-6">
+          <h2 className="text-3xl md:text-4xl font-serif text-center text-primary mb-8">Çalgılar</h2>
+          <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {albums.map((album) => (
               <AlbumCover
                 key={album.name}
@@ -495,14 +493,14 @@ export default function Home() {
       {/* Instagram Section */}
       <motion.section 
         id="instagram" 
-        className="bg-background py-16 md:py-24"
+        className="bg-background py-12 md:py-20"
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.2 }}
         transition={{ duration: 0.8 }}
       >
         <div className="container mx-auto px-6">
-          <h2 className="text-3xl md:text-4xl font-serif text-center text-primary mb-10">Atölyeden Anlar</h2>
+          <h2 className="text-3xl md:text-4xl font-serif text-center text-primary mb-8">Atölyeden Anlar</h2>
           {isMobile ? (
             <motion.div 
               className="relative overflow-hidden w-full h-[450px]"
@@ -556,7 +554,7 @@ export default function Home() {
               </motion.div>
             </motion.div>
           ) : (
-            <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
               {instagramPosts.map((post, index) => (
                 <div key={index} className="flex">
                   <InstagramPost
@@ -588,15 +586,15 @@ export default function Home() {
       {/* İletişim Section */}
       <motion.section 
         id="iletisim" 
-        className="bg-surface py-16 md:py-24"
+        className="bg-surface py-12 md:py-20"
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.2 }}
         transition={{ duration: 0.8 }}
       >
         <div className="container mx-auto px-6 text-center">
-          <h2 className="text-3xl md:text-4xl font-serif text-center text-primary mb-10">İletişim</h2>
-          <div className="max-w-3xl mx-auto bg-background p-8 md:p-12 rounded-lg shadow-xl">
+          <h2 className="text-3xl md:text-4xl font-serif text-center text-primary mb-8">İletişim</h2>
+          <div className="max-w-3xl mx-auto bg-background p-8 rounded-lg shadow-xl">
             <form onSubmit={handleFormSubmit}>
               <div className="mb-4">
                 <label className="block text-text-primary text-sm font-bold mb-2" htmlFor="name">Adınız Soyadınız</label>
