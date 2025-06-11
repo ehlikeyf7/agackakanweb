@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Instagram, Heart, MessageCircle, Send } from 'lucide-react';
 
 interface InstagramPostProps {
@@ -8,25 +8,53 @@ interface InstagramPostProps {
   postUrl: string;
   username: string;
   description: string;
+  isMobile?: boolean;
 }
 
-const InstagramPost = ({ videoSrc, postUrl, username, description }: InstagramPostProps) => {
+const InstagramPost = ({ videoSrc, postUrl, username, description, isMobile = false }: InstagramPostProps) => {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const handleMouseEnter = () => {
-    videoRef.current?.play();
+    if (!isMobile && videoRef.current) {
+      videoRef.current?.play();
+    }
   };
 
   const handleMouseLeave = () => {
-    if (videoRef.current) {
+    if (!isMobile && videoRef.current) {
       videoRef.current.pause();
       videoRef.current.currentTime = 0;
     }
   };
 
+  useEffect(() => {
+    if (isMobile && videoRef.current) {
+      const video = videoRef.current;
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            video.play().catch(error => console.error("Video autoplay failed:", error));
+          } else {
+            video.pause();
+          }
+        },
+        { threshold: 0.5 }
+      );
+
+      observer.observe(video);
+
+      return () => {
+        if (video) {
+          observer.unobserve(video);
+        }
+      };
+    }
+  }, [isMobile]);
+
+
   return (
     <div 
-      className="flex flex-col bg-surface/50 rounded-lg overflow-hidden shadow-lg transition-transform duration-300 ease-in-out hover:scale-105 hover:shadow-2xl border border-accent/10"
+      className="flex flex-col h-full bg-surface/50 rounded-lg overflow-hidden shadow-lg transition-transform duration-300 ease-in-out hover:scale-105 hover:shadow-2xl border border-accent/10"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
@@ -45,19 +73,19 @@ const InstagramPost = ({ videoSrc, postUrl, username, description }: InstagramPo
       </div>
       
       {/* Video */}
-      <a href={postUrl} target="_blank" rel="noopener noreferrer" className="block cursor-pointer">
+      <a href={postUrl} target="_blank" rel="noopener noreferrer" className="block cursor-pointer aspect-square relative bg-black">
         <video
           ref={videoRef}
           src={videoSrc}
           loop
           muted
           playsInline
-          className="w-full h-auto"
+          className="w-full h-full object-cover"
         />
       </a>
 
       {/* Footer Icons & Description */}
-      <div className="p-3 mt-auto space-y-3">
+      <div className="p-3 mt-auto space-y-3 flex-grow flex flex-col justify-end">
         <div className="flex items-center gap-4 text-text-secondary">
           <Heart className="w-6 h-6 hover:text-red-500 transition-colors" />
           <MessageCircle className="w-6 h-6 hover:text-text-primary transition-colors" />

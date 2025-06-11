@@ -505,17 +505,18 @@ export default function Home() {
               <motion.div
                 className="flex gap-4 absolute"
                 animate={{
-                  x: ['0%', '-100%'],
+                  x: ['0%', '-50%'],
                   transition: {
                     ease: 'linear',
-                    duration: 20,
+                    duration: 30,
                     repeat: Infinity,
                   },
                 }}
               >
                 {[...instagramPosts, ...instagramPosts].map((post, index) => (
-                  <div key={index} className="w-[300px] flex-shrink-0">
+                  <div key={index} className="w-[300px] h-full flex-shrink-0">
                     <InstagramPost
+                      isMobile
                       videoSrc={post.videoSrc}
                       postUrl={post.postUrl}
                       username="atolye_agackakan"
