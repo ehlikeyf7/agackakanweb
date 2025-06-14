@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Inter, Playfair_Display, Lato } from "next/font/google";
+import { Inter, Lora, Lato } from "next/font/google";
 import "../styles/globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -8,17 +8,11 @@ import { Toaster } from 'react-hot-toast';
 
 // Configure fonts
 const inter = Inter({ subsets: ["latin"], variable: '--font-inter' });
-const cormorant = Cormorant_Garamond({
+const lora = Lora({
   subsets: ['latin'],
   weight: ['400', '700'],
-  variable: '--font-cormorant',
+  variable: '--font-lora',
 });
-
-const playfair = Playfair_Display({
-  subsets: ['latin'],
-  weight: ['400', '700'],
-  variable: '--font-playfair-display',
-})
 
 const lato = Lato({
   subsets: ['latin'],
@@ -111,7 +105,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="tr" className={`${playfair.variable} ${lato.variable}`}>
+    <html lang="tr" className={`${lora.variable} ${lato.variable}`}>
       <body className="bg-background text-on-surface antialiased cursor-none">
         <script
             type="application/ld+json"

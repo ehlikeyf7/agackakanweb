@@ -21,8 +21,8 @@ const config: Config = {
         'text-secondary': '#B0B0B0',
       },
       fontFamily: {
-        serif: ['"Playfair Display"', 'serif'],
-        sans: ['"Lato"', 'sans-serif'],
+        serif: ['var(--font-lora)', 'serif'],
+        sans: ['var(--font-lato)', 'sans-serif'],
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",

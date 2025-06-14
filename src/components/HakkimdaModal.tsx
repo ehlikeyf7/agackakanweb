@@ -35,10 +35,10 @@ const HakkimdaModal: React.FC<HakkimdaModalProps> = ({ onClose }) => {
                 />
             </div>
             <div className="p-8 md:p-12 flex flex-col justify-center">
-                <h2 className="text-3xl font-bold font-playfair text-gold-500 mb-6">
+                <h2 className="text-3xl font-serif text-primary mb-6">
                   Hakkımda
                 </h2>
-                <div className="space-y-4 text-gray-300 font-lato text-left">
+                <div className="space-y-4 text-text-secondary font-serif text-left">
                   <p>
                     Merhaba, ben Hasan. Çalgı yapımına olan tutkum, küçük yaşlarda
                     amcamın bağlama yapım atölyesi olan Güven Saz Evi&apos;nde

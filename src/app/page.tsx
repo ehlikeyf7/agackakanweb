@@ -274,7 +274,7 @@ export default function Home() {
   const instagramPosts = [
     {
       videoSrc: '/videos/2024_Messiah.mp4',
-      posterSrc: '/images/2024_messiah/1.png',
+      posterSrc: '',
       postUrl: 'https://www.instagram.com/atolye_agackakann/',
       description: "2024 'Messiah' Kemanı"
     },
@@ -287,6 +287,12 @@ export default function Home() {
       videoSrc: '/videos/Varnish.mp4',
       postUrl: 'https://www.instagram.com/atolye_agackakann/',
       description: "Cila Aşaması"
+    },
+    {
+      videoSrc: '/videos/Violin_f_hole.mp4',
+      posterSrc: '',
+      postUrl: 'https://www.instagram.com/atolye_agackakann/',
+      description: "F deliği kesimi"
     },
   ];
 
@@ -311,13 +317,6 @@ export default function Home() {
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
-
-  const heroRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: heroRef,
-    offset: ['start start', 'end start'],
-  });
-  const parallaxY = useTransform(scrollYProgress, [0, 1], isMobile ? ['0%', '0%'] : ['0%', '50%']);
 
   const title = "Atölye Ağaçkakan";
   const titleWords = title.split(" ");
@@ -378,7 +377,7 @@ export default function Home() {
   return (
     <>
       {/* Hero Section */}
-      <section ref={heroRef} id="home" className="grid grid-cols-1 md:grid-cols-2 min-h-screen bg-background relative">
+      <section id="home" className="grid grid-cols-1 md:grid-cols-2 min-h-screen bg-background relative">
         <div className="flex flex-col items-center justify-center p-8 md:p-16 text-center z-10">
           <motion.h1 
             className="text-5xl lg:text-7xl font-serif text-primary leading-tight mb-4"
@@ -400,7 +399,7 @@ export default function Home() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.8 }}
-            className="text-lg lg:text-xl mb-8 max-w-lg mx-auto text-text-secondary"
+            className="font-serif text-lg lg:text-xl mb-8 max-w-lg mx-auto text-text-secondary"
           >
             Geleneksel el işçiliği ve modern estetiğin buluştuğu, tınısı ve karakteriyle eşsiz yaylı enstrümanlar.
           </motion.p>
@@ -411,7 +410,7 @@ export default function Home() {
             className="flex flex-wrap justify-center gap-x-6 md:gap-x-8 gap-y-2"
           >
             <Link href="/#calgilar" data-cursor-hover="true" className="relative text-accent hover:text-primary transition-colors duration-300 text-lg group py-2 focusable">
-              <span>Çalgılar</span>
+              <span>Fotoğraf Albümleri</span>
               <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out origin-left"></span>
             </Link>
             <button onClick={() => setIsHakkimdaOpen(true)} data-cursor-hover="true" className="relative text-accent hover:text-primary transition-colors duration-300 text-lg group py-2 focusable">
@@ -422,16 +421,21 @@ export default function Home() {
               <span>İletişim</span>
               <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out origin-left"></span>
             </Link>
-            <a href="https://www.instagram.com/atolye_agackakann/" data-cursor-hover="true" target="_blank" rel="noopener noreferrer" className="relative text-accent hover:text-primary transition-colors duration-300 text-lg group py-2 focusable">
+            <a 
+              href="https://www.instagram.com/atolye_agackakann/" 
+              data-cursor-hover="true" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="flex items-center gap-2 text-accent border border-accent rounded-full px-4 py-2 hover:bg-accent hover:text-background transition-all duration-300 ease-in-out text-lg group focusable transform hover:scale-105"
+            >
+              <InstagramIcon size={20} />
               <span>Instagram</span>
-              <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out origin-left"></span>
             </a>
           </motion.div>
         </div>
         <div className="relative h-[60vh] md:h-screen overflow-hidden">
-            <motion.div 
-              className="absolute inset-0 h-[150%] top-[-25%]"
-              style={{ y: parallaxY }}
+            <div 
+              className="absolute inset-0"
             >
               <Image 
                   src="/images/dut_keman/IMG_1767.JPG"
@@ -440,7 +444,7 @@ export default function Home() {
                   style={{ objectFit: 'cover' }}
                   priority
               />
-            </motion.div>
+            </div>
         </div>
         <div 
             onClick={scrollToCalgilar}
@@ -476,13 +480,15 @@ export default function Home() {
         transition={{ duration: 0.8 }}
       >
         <div className="container mx-auto px-6">
-          <h2 className="text-3xl md:text-4xl font-serif text-center text-primary mb-8">Çalgılar</h2>
+          <h2 className="text-3xl md:text-4xl font-serif text-center text-primary mb-8">Fotoğraf Albümleri</h2>
           <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {albums.map((album) => (
               <AlbumCover
                 key={album.name}
                 title={album.name}
                 coverImage={album.cover}
+                backImage1={album.images[1]}
+                backImage2={album.images[2]}
                 onClick={() => setSelectedAlbum(album)}
               />
             ))}
@@ -554,7 +560,7 @@ export default function Home() {
               </motion.div>
             </motion.div>
           ) : (
-            <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
               {instagramPosts.map((post, index) => (
                 <div key={index} className="flex">
                   <InstagramPost

@@ -14,24 +14,32 @@ interface InstagramPostProps {
 }
 
 const InstagramPost = ({ videoSrc, postUrl, username, description, isMobile = false, posterSrc }: InstagramPostProps) => {
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const fgVideoRef = useRef<HTMLVideoElement>(null);
+  const bgVideoRef = useRef<HTMLVideoElement>(null);
 
   const handleMouseEnter = () => {
-    if (!isMobile && videoRef.current) {
-      videoRef.current?.play();
+    if (!isMobile) {
+      fgVideoRef.current?.play().catch(e => console.error("FG video play failed", e));
+      bgVideoRef.current?.play().catch(e => console.error("BG video play failed", e));
     }
   };
 
   const handleMouseLeave = () => {
-    if (!isMobile && videoRef.current) {
-      videoRef.current.pause();
-      videoRef.current.currentTime = 0;
+    if (!isMobile) {
+      if(fgVideoRef.current) {
+        fgVideoRef.current.pause();
+        fgVideoRef.current.currentTime = 0;
+      }
+      if(bgVideoRef.current) {
+        bgVideoRef.current.pause();
+        bgVideoRef.current.currentTime = 0;
+      }
     }
   };
 
   useEffect(() => {
-    if (isMobile && videoRef.current) {
-      const video = videoRef.current;
+    if (isMobile && fgVideoRef.current) {
+      const video = fgVideoRef.current;
       const observer = new IntersectionObserver(
         ([entry]) => {
           if (entry.isIntersecting) {
@@ -75,19 +83,33 @@ const InstagramPost = ({ videoSrc, postUrl, username, description, isMobile = fa
       </div>
       
       {/* Video or Image */}
-      <a href={postUrl} target="_blank" rel="noopener noreferrer" className="block cursor-pointer aspect-square relative bg-black">
+      <div className="w-full aspect-square overflow-hidden relative bg-black">
         {videoSrc && (
-          <video
-            ref={videoRef}
-            src={videoSrc}
-            loop
-            muted
-            playsInline
-            poster={posterSrc}
-            className="w-full h-full object-cover"
-          />
+          <>
+            {/* Arka Plan Videosu (Bulanık) */}
+            <video
+              ref={bgVideoRef}
+              src={videoSrc}
+              loop
+              muted
+              playsInline
+              className="absolute top-0 left-0 w-full h-full object-cover blur-lg scale-110 brightness-50"
+            />
+            {/* Ön Plan Videosu (Net) */}
+            <a href={postUrl} target="_blank" rel="noopener noreferrer" className="absolute inset-0 flex items-center justify-center">
+              <video
+                ref={fgVideoRef}
+                src={videoSrc}
+                loop
+                muted
+                playsInline
+                poster={posterSrc}
+                className="relative w-full h-full object-contain z-10"
+              />
+            </a>
+          </>
         )}
-      </a>
+      </div>
 
       {/* Footer Icons & Description */}
       <div className="p-3 mt-auto space-y-3 flex-grow flex flex-col justify-end">

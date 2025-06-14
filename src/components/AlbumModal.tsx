@@ -18,38 +18,37 @@ interface AlbumModalProps {
   onClose: () => void;
 }
 
-const variants = {
-  enter: (direction: number) => ({
-    x: direction > 0 ? '100%' : '-100%',
+const zoomVariants = {
+  hidden: {
     opacity: 0,
-  }),
-  center: {
-    x: 0,
-    opacity: 1,
+    scale: 0.8,
   },
-  exit: (direction: number) => ({
-    x: direction < 0 ? '100%' : '-100%',
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: {
+      type: 'spring',
+      stiffness: 250,
+      damping: 25
+    }
+  },
+  exit: {
     opacity: 0,
-  }),
-};
-
-const swipeConfidenceThreshold = 10000;
-const swipePower = (offset: number, velocity: number) => {
-  return Math.abs(offset) * velocity;
+    scale: 0.8,
+    transition: {
+      duration: 0.15
+    }
+  },
 };
 
 const AlbumModal: React.FC<AlbumModalProps> = ({ album, onClose }) => {
-  const [[page, direction], setPage] = useState([0, 0]);
   const [selectedMediaIndex, setSelectedMediaIndex] = useState<number | null>(null);
   const modalRef = useRef(null);
 
   const paginate = (newDirection: number) => {
     if (selectedMediaIndex === null) return;
-    const newIndex = selectedMediaIndex + newDirection;
-    if (newIndex >= 0 && newIndex < album.images.length) {
-      setPage([newIndex, newDirection]);
-      setSelectedMediaIndex(newIndex);
-    }
+    const newIndex = (selectedMediaIndex + newDirection + album.images.length) % album.images.length;
+    setSelectedMediaIndex(newIndex);
   };
 
   const isVideo = (path: string) => {
@@ -127,37 +126,20 @@ const AlbumModal: React.FC<AlbumModalProps> = ({ album, onClose }) => {
         </motion.button>
       </motion.div>
 
-      <AnimatePresence initial={false} custom={direction}>
+      <AnimatePresence>
         {selectedMedia && (
           <motion.div
-            key={page}
-            custom={direction}
-            variants={variants}
-            initial="enter"
-            animate="center"
+            key={selectedMediaIndex}
+            variants={zoomVariants}
+            initial="hidden"
+            animate="visible"
             exit="exit"
-            transition={{
-                x: { type: "spring", stiffness: 300, damping: 30 },
-                opacity: { duration: 0.2 }
-            }}
-            drag="x"
-            dragConstraints={{ left: 0, right: 0 }}
-            dragElastic={1}
-            onDragEnd={(e, { offset, velocity }) => {
-              const swipe = swipePower(offset.x, velocity.x);
-              if (swipe < -swipeConfidenceThreshold) {
-                paginate(1);
-              } else if (swipe > swipeConfidenceThreshold) {
-                paginate(-1);
-              }
-            }}
             className="fixed inset-0 flex justify-center items-center z-[100] p-4 bg-black/80"
             onClick={() => setSelectedMediaIndex(null)}
           >
              <button
               onClick={(e) => { e.stopPropagation(); paginate(-1); }}
               className="absolute left-2 md:left-5 top-1/2 -translate-y-1/2 z-[110] bg-white/10 hover:bg-white/20 p-2 rounded-full text-white focusable transition"
-              disabled={selectedMediaIndex === 0}
             >
               <ChevronLeft size={24} />
             </button>
@@ -175,7 +157,6 @@ const AlbumModal: React.FC<AlbumModalProps> = ({ album, onClose }) => {
              <button
               onClick={(e) => { e.stopPropagation(); paginate(1); }}
               className="absolute right-2 md:right-5 top-1/2 -translate-y-1/2 z-[110] bg-white/10 hover:bg-white/20 p-2 rounded-full text-white focusable transition"
-              disabled={selectedMediaIndex === album.images.length - 1}
             >
               <ChevronRight size={24} />
             </button>
