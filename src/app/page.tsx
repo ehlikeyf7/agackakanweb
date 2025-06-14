@@ -10,6 +10,7 @@ import AlbumModal from '@/components/AlbumModal';
 import HakkimdaModal from '@/components/HakkimdaModal';
 import ScrollToTopButton from '@/components/ScrollToTopButton';
 import InstagramPost from '@/components/InstagramPost';
+import Footer from '@/components/Footer';
 import { ChevronUp, Mail, Instagram as InstagramIcon } from "lucide-react";
 import { FaArrowDown } from 'react-icons/fa';
 
@@ -667,6 +668,7 @@ export default function Home() {
         )}
       </AnimatePresence>
       <ScrollToTopButton />
+      <Footer />
     </>
   );
 } 
