@@ -38,7 +38,7 @@ const albums: AlbumData[] = [
     cover: "/images/2024_messiah/A4 (3).png",
   },
   {
-    name: "Cello",
+    name: "Çello",
     description: "2014 yılında, Antonio Stradivari'nin 1711 tarihli 'Duport' çellosunun form yapısı model alınarak üretilmiştir.",
     images: [
       "/images/cello/IMG_0179.JPG",
