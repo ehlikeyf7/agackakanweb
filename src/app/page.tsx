@@ -16,6 +16,7 @@ import { FaArrowDown } from 'react-icons/fa';
 
 interface AlbumData {
   name: string;
+  description: string;
   images: string[];
   cover: string;
 }
@@ -23,6 +24,7 @@ interface AlbumData {
 const albums: AlbumData[] = [
   {
     name: "2024 Messiah",
+    description: "Antonio Stradivari'nin 1716 tarihli 'Messiah' kemanının form yapısı referans alınarak, kaliteli Avrupa akçaağacı ve ladini ile üretilmiştir. Cila olarak, eskitme stilinde bir yağ cilası uygulanmıştır.",
     images: [
       "/images/2024_messiah/1.png",
       "/images/2024_messiah/2.png",
@@ -37,6 +39,7 @@ const albums: AlbumData[] = [
   },
   {
     name: "Cello",
+    description: "2014 yılında, Antonio Stradivari'nin 1711 tarihli 'Duport' çellosunun form yapısı model alınarak üretilmiştir.",
     images: [
       "/images/cello/IMG_0179.JPG",
       "/images/cello/IMG_0180.JPG",
@@ -97,6 +100,7 @@ const albums: AlbumData[] = [
   },
   {
     name: "Dut Keman",
+    description: "Barok ve modern tasarımlardan ilhamla, form yapısı tarafımdan tasarlanan bu özel çalgıda, akçaağaç yerine geleneksel Türk halk müziği enstrümanlarında sıklıkla tercih edilen dut ağacı kullanılmıştır. Dut ve ladin ağaçları arasındaki ton dengesini sağlamak amacıyla özel bir alkol cilası uygulanmıştır.",
     images: [
       "/images/dut_keman/IMG_0766.JPG",
       "/images/dut_keman/IMG_0773.JPG",
@@ -168,6 +172,7 @@ const albums: AlbumData[] = [
   },
   {
     name: "2014 Messiah",
+    description: "Antonio Stradivari'nin 1716 tarihli 'Messiah' kemanının form yapısı referans alınarak, kaliteli yerli akçaağaç ve ladin ile üretilmiştir. Cila olarak, geleneksel bir alkol cilası uygulanmıştır.",
     images: [
       "/images/2014_messiah/IMG_0850.JPG",
       "/images/2014_messiah/IMG_0852.JPG",
@@ -224,7 +229,8 @@ const albums: AlbumData[] = [
   },
   {
     name: "Atölyeden Kareler",
-  images: [
+    description: "Bir enstrümanın hayata geliş anları. Kesimden cilaya, her bir detayın özenle işlendiği yapım sürecinden kesitler.",
+    images: [
       "/images/yapim_asamasi/0608 (1)(1).jpg",
       "/images/yapim_asamasi/0608 (1).jpg",
       "/images/yapim_asamasi/1.JPG",

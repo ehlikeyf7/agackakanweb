@@ -37,13 +37,13 @@ const AlbumCover: React.FC<AlbumCoverProps> = ({ title, coverImage, backImage1, 
         
         {/* Ana Kart */}
         <div className="relative w-full h-full rounded-lg shadow-xl overflow-hidden">
-          <Image
-            src={coverImage}
-            alt={`Kapak fotoğrafı: ${title}`}
-            fill
-            style={{ objectFit: 'cover' }}
-            className="group-hover:scale-105 transition-transform duration-500"
-          />
+      <Image 
+        src={coverImage} 
+        alt={`Kapak fotoğrafı: ${title}`} 
+        fill 
+        style={{ objectFit: 'cover' }} 
+        className="group-hover:scale-105 transition-transform duration-500"
+      />
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent flex items-end p-6">
             <h3 className="text-3xl font-serif text-white tracking-wide drop-shadow-md">
               {title}

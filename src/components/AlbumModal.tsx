@@ -9,6 +9,7 @@ import { PlayCircle, ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface Album {
   name: string;
+  description: string;
   images: string[];
   cover: string;
 }
@@ -79,8 +80,8 @@ const AlbumModal: React.FC<AlbumModalProps> = ({ album, onClose }) => {
           className="relative bg-surface min-h-screen"
         >
           <div className="container mx-auto px-6 py-20">
-            <h2 className="text-4xl md:text-5xl font-bold text-center text-primary mb-2">{album.name}</h2>
-            <p className="text-lg text-center text-text-primary/70 mb-12">Kapatmak için dışarıya veya kapatma düğmesine tıklayın.</p>
+            <h2 className="text-4xl md:text-5xl font-bold text-center text-primary mb-4">{album.name}</h2>
+            <p className="text-lg text-center text-text-primary/70 mb-12 max-w-3xl mx-auto">{album.description}</p>
 
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {album.images.map((media, index) => (
