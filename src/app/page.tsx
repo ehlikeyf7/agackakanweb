@@ -411,7 +411,7 @@ export default function Home() {
             className="flex flex-wrap justify-center gap-x-6 md:gap-x-8 gap-y-2"
           >
             <Link href="/#calgilar" data-cursor-hover="true" className="relative text-accent hover:text-primary transition-colors duration-300 text-lg group py-2 focusable">
-              <span>Fotoğraf Albümleri</span>
+              <span>Portfolyo</span>
               <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out origin-left"></span>
             </Link>
             <button onClick={() => setIsHakkimdaOpen(true)} data-cursor-hover="true" className="relative text-accent hover:text-primary transition-colors duration-300 text-lg group py-2 focusable">
@@ -482,7 +482,7 @@ export default function Home() {
         transition={{ duration: 0.8 }}
       >
         <div className="container mx-auto px-6">
-          <h2 className="text-3xl md:text-4xl font-serif text-center text-primary mb-8">Fotoğraf Albümleri</h2>
+          <h2 className="text-3xl md:text-4xl font-serif text-center text-primary mb-8">Portfolyo</h2>
           <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {albums.map((album) => (
               <AlbumCover
