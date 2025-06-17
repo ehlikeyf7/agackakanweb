@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useState, useEffect, useRef } from 'react';
-import { AnimatePresence, motion, useScroll, useTransform } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import toast from 'react-hot-toast';
 import AlbumCover from '@/components/AlbumCover';
 import AlbumModal from '@/components/AlbumModal';
@@ -435,17 +435,18 @@ export default function Home() {
           </motion.div>
         </div>
         <div className="relative h-[60vh] md:h-screen overflow-hidden">
-            <div 
-              className="absolute inset-0"
-            >
-              <Image 
-                  src="/images/dut_keman/IMG_1767.JPG"
-                  alt="Atölye Ağaçkakan el yapımı dut keman"
-                  fill
-                  style={{ objectFit: 'cover' }}
-                  priority
-              />
-            </div>
+          <motion.div 
+            className="absolute inset-0 z-0"
+          >
+            <div className="absolute inset-0 bg-black/30 z-10"/>
+            <Image 
+                src="/images/dut_keman/IMG_1767.JPG"
+                alt="Atölye Ağaçkakan el yapımı dut keman"
+                fill
+                style={{ objectFit: 'cover' }}
+                priority
+            />
+          </motion.div>
         </div>
         <div 
             onClick={scrollToCalgilar}
