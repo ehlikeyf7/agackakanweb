@@ -1,0 +1,14 @@
+{
+  "navigation": {
+    "portfolio": "Portfolio",
+    "about": "About",
+    "contact": "Contact"
+  },
+  "hero": {
+    "title": "Atölye Ağaçkakan",
+    "subtitle": "Where traditional craftsmanship meets modern aesthetics, creating unique string instruments with exceptional tone and character."
+  },
+  "portfolioSection": {
+    "title": "Portfolio"
+  }
+} 
