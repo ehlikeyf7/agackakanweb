@@ -93,6 +93,7 @@ const InstagramPost = ({ videoSrc, postUrl, username, description, isMobile = fa
               loop
               muted
               playsInline
+              preload="metadata"
               className="absolute top-0 left-0 w-full h-full object-cover blur-lg scale-110 brightness-50"
             />
             {/* Ön Plan Videosu (Net) */}
@@ -103,6 +104,7 @@ const InstagramPost = ({ videoSrc, postUrl, username, description, isMobile = fa
                 loop
                 muted
                 playsInline
+                preload="metadata"
                 poster={posterSrc}
                 className="relative w-full h-full object-contain z-10"
               />

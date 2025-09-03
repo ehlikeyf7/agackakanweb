@@ -4,13 +4,13 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useState, useEffect, useRef } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
+import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import toast from 'react-hot-toast';
 import AlbumCover from '@/components/AlbumCover';
 import AlbumModal from '@/components/AlbumModal';
 import HakkimdaModal from '@/components/HakkimdaModal';
 import ScrollToTopButton from '@/components/ScrollToTopButton';
 import InstagramPost from '@/components/InstagramPost';
-import Footer from '@/components/Footer';
 import { ChevronUp, Mail, Instagram as InstagramIcon } from "lucide-react";
 import { FaArrowDown } from 'react-icons/fa';
 
@@ -22,6 +22,20 @@ interface AlbumData {
 }
 
 const albums: AlbumData[] = [
+  {
+    name: "2025 Keman",
+    description: "2025 yılında tamamlanan yeni keman modelim. Seçilmiş Avrupa akçaağaç ve ladin ile, modern işçilik ve geleneksel ses estetiğini buluşturur.",
+    images: [
+      "/images/2025_violin/1.png",
+      "/images/2025_violin/2.png",
+      "/images/2025_violin/3.png",
+      "/images/2025_violin/4.png",
+      "/images/2025_violin/5.png",
+      "/images/2025_violin/6.png",
+      "/images/2025_violin/7.jpg",
+    ],
+    cover: "/images/2025_violin/1.png",
+  },
   {
     name: "2024 Messiah",
     description: "Antonio Stradivari'nin 1716 tarihli 'Messiah' kemanının form yapısı referans alınarak, kaliteli Avrupa akçaağacı ve ladini ile üretilmiştir. Cila olarak, eskitme stilinde bir yağ cilası uygulanmıştır.",
@@ -271,12 +285,47 @@ export default function Home() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    message: ''
+    message: '',
+    website: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [reduceMotion, setReduceMotion] = useState(false);
 
   const calgilarRef = useRef<HTMLElement>(null);
+
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+
+  const slugify = (text: string) => (
+    text
+      .toLowerCase()
+      .replace(/ğ/g, 'g')
+      .replace(/ü/g, 'u')
+      .replace(/ş/g, 's')
+      .replace(/ı/g, 'i')
+      .replace(/ö/g, 'o')
+      .replace(/ç/g, 'c')
+      .replace(/â|î|û/g, '')
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/(^-|-$)+/g, '')
+  );
+
+  const openAlbum = (album: AlbumData) => {
+    setSelectedAlbum(album);
+    const params = new URLSearchParams(searchParams ?? undefined);
+    params.set('album', slugify(album.name));
+    router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+  };
+
+  const closeAlbum = () => {
+    setSelectedAlbum(null);
+    const params = new URLSearchParams(searchParams ?? undefined);
+    params.delete('album');
+    const qs = params.toString();
+    router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
+  };
 
   const instagramPosts = [
     {
@@ -316,6 +365,16 @@ export default function Home() {
     };
   }, [selectedAlbum, isHakkimdaOpen]);
 
+  // Derin link: ?album=slug ile direkt modal aç
+  useEffect(() => {
+    const albumSlug = searchParams?.get('album');
+    if (!albumSlug) return;
+    const found = albums.find(a => slugify(a.name) === albumSlug);
+    if (found) {
+      setSelectedAlbum(found);
+    }
+  }, [searchParams]);
+
   useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768); // 768px is md breakpoint in Tailwind
@@ -323,6 +382,15 @@ export default function Home() {
     checkMobile();
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Hareket azaltma tercihini izle
+  useEffect(() => {
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const update = () => setReduceMotion(mq.matches);
+    update();
+    mq.addEventListener('change', update);
+    return () => mq.removeEventListener('change', update);
   }, []);
 
   const title = "Atölye Ağaçkakan";
@@ -333,15 +401,15 @@ export default function Home() {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.3,
-        delayChildren: 0.2,
+        staggerChildren: reduceMotion ? 0 : 0.3,
+        delayChildren: reduceMotion ? 0 : 0.2,
       },
     },
   };
 
   const titleWordVariants = {
     hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } },
+    visible: { opacity: 1, y: 0, transition: { duration: reduceMotion ? 0 : 0.5, ease: 'easeOut' } },
   };
 
   const scrollToCalgilar = () => {
@@ -369,7 +437,7 @@ export default function Home() {
 
       if (response.ok) {
         toast.success('Mesajınız başarıyla gönderildi!', { id: toastId });
-        setFormData({ name: '', email: '', message: '' });
+        setFormData({ name: '', email: '', message: '', website: '' });
       } else {
         const data = await response.json();
         throw new Error(data.message || 'Bir hata oluştu.');
@@ -384,12 +452,12 @@ export default function Home() {
   return (
     <>
       {/* Hero Section */}
-      <section id="home" className="grid grid-cols-1 md:grid-cols-2 min-h-screen bg-background relative">
+      <section id="home" className="grid grid-cols-1 md:grid-cols-2 min-h-[100svh] bg-background relative">
         <div className="flex flex-col items-center justify-center p-8 md:p-16 text-center z-10">
           <motion.h1 
-            className="text-5xl lg:text-7xl font-serif text-primary leading-tight mb-4"
+            className="font-serif text-primary leading-tight mb-4 text-[clamp(32px,8vw,64px)]"
             variants={titleContainerVariants}
-            initial="hidden"
+            initial={reduceMotion ? undefined : 'hidden'}
             animate="visible"
           >
             {titleWords.map((word, index) => (
@@ -403,28 +471,28 @@ export default function Home() {
             ))}
           </motion.h1>
           <motion.p 
-            initial={{ opacity: 0, y: 20 }}
+            initial={reduceMotion ? undefined : { opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.8 }}
+            transition={{ duration: reduceMotion ? 0 : 0.8, delay: reduceMotion ? 0 : 0.8 }}
             className="font-serif text-lg lg:text-xl mb-8 max-w-lg mx-auto text-text-secondary"
           >
             Geleneksel el işçiliği ve modern estetiğin buluştuğu, tınısı ve karakteriyle eşsiz yaylı enstrümanlar.
           </motion.p>
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={reduceMotion ? undefined : { opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 1 }}
+            transition={{ duration: reduceMotion ? 0 : 0.8, delay: reduceMotion ? 0 : 1 }}
             className="flex flex-wrap justify-center gap-x-6 md:gap-x-8 gap-y-2"
           >
-            <Link href="/#calgilar" data-cursor-hover="true" className="relative text-accent hover:text-primary transition-colors duration-300 text-lg group py-2 focusable">
+            <Link href="/#calgilar" data-cursor-hover="true" className="relative text-accent hover:text-primary transition-colors duration-300 text-lg group py-2 focusable tap-target">
               <span>Portfolyo</span>
               <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out origin-left"></span>
             </Link>
-            <button onClick={() => setIsHakkimdaOpen(true)} data-cursor-hover="true" className="relative text-accent hover:text-primary transition-colors duration-300 text-lg group py-2 focusable">
+            <button onClick={() => setIsHakkimdaOpen(true)} data-cursor-hover="true" className="relative text-accent hover:text-primary transition-colors duration-300 text-lg group py-2 focusable tap-target">
               <span>Hakkımda</span>
               <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out origin-left"></span>
             </button>
-            <Link href="/#iletisim" data-cursor-hover="true" className="relative text-accent hover:text-primary transition-colors duration-300 text-lg group py-2 focusable">
+            <Link href="/#iletisim" data-cursor-hover="true" className="relative text-accent hover:text-primary transition-colors duration-300 text-lg group py-2 focusable tap-target">
               <span>İletişim</span>
               <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out origin-left"></span>
             </Link>
@@ -433,7 +501,7 @@ export default function Home() {
               data-cursor-hover="true" 
               target="_blank" 
               rel="noopener noreferrer" 
-              className="flex items-center gap-2 text-accent border border-accent rounded-full px-4 py-2 hover:bg-accent hover:text-background transition-all duration-300 ease-in-out text-lg group focusable transform hover:scale-105"
+              className="flex items-center gap-2 text-accent border border-accent rounded-full px-4 py-2 hover:bg-accent hover:text-background transition-all duration-300 ease-in-out text-lg group focusable transform hover:scale-105 tap-target"
             >
               <InstagramIcon size={20} />
               <span>Instagram</span>
@@ -451,6 +519,7 @@ export default function Home() {
                 fill
                 style={{ objectFit: 'cover' }}
                 priority
+                sizes="100vw"
             />
           </motion.div>
         </div>
@@ -481,14 +550,14 @@ export default function Home() {
       <motion.section 
         ref={calgilarRef}
         id="calgilar" 
-        className="bg-surface py-12 md:py-20 relative z-20"
+        className="bg-surface py-12 md:py-20 relative z-20 cv-auto"
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.2 }}
         transition={{ duration: 0.8 }}
       >
         <div className="container mx-auto px-6">
-          <h2 className="text-3xl md:text-4xl font-serif text-center text-primary mb-8">Portfolyo</h2>
+          <h2 className="font-serif text-center text-primary mb-8 text-[clamp(24px,5vw,36px)]">Portfolyo</h2>
           <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {albums.map((album) => (
               <AlbumCover
@@ -497,7 +566,7 @@ export default function Home() {
                 coverImage={album.cover}
                 backImage1={album.images[1]}
                 backImage2={album.images[2]}
-                onClick={() => setSelectedAlbum(album)}
+                onClick={() => openAlbum(album)}
               />
             ))}
           </div>
@@ -507,14 +576,14 @@ export default function Home() {
       {/* Instagram Section */}
       <motion.section 
         id="instagram" 
-        className="bg-background py-12 md:py-20"
+        className="bg-background py-12 md:py-20 cv-auto"
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.2 }}
         transition={{ duration: 0.8 }}
       >
         <div className="container mx-auto px-6">
-          <h2 className="text-3xl md:text-4xl font-serif text-center text-primary mb-8">Atölyeden Anlar</h2>
+          <h2 className="font-serif text-center text-primary mb-8 text-[clamp(24px,5vw,36px)]">Atölyeden Anlar</h2>
           {isMobile ? (
             <motion.div 
               className="relative overflow-hidden w-full h-[450px]"
@@ -607,9 +676,22 @@ export default function Home() {
         transition={{ duration: 0.8 }}
       >
         <div className="container mx-auto px-6 text-center">
-          <h2 className="text-3xl md:text-4xl font-serif text-center text-primary mb-8">İletişim</h2>
+          <h2 className="font-serif text-center text-primary mb-8 text-[clamp(24px,5vw,36px)]">İletişim</h2>
           <div className="max-w-3xl mx-auto bg-background p-8 rounded-lg shadow-xl">
             <form onSubmit={handleFormSubmit}>
+              {/* Honeypot field - gerçek kullanıcılar görmez */}
+              <div className="hidden" aria-hidden="true">
+                <label htmlFor="website">Website</label>
+                <input
+                  id="website"
+                  name="website"
+                  type="text"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  value={formData.website}
+                  onChange={handleFormChange}
+                />
+              </div>
               <div className="mb-4">
                 <label className="block text-text-primary text-sm font-bold mb-2" htmlFor="name">Adınız Soyadınız</label>
                 <input 
@@ -620,6 +702,8 @@ export default function Home() {
                   placeholder="Adınız Soyadınız" 
                   value={formData.name}
                   onChange={handleFormChange}
+                  autoComplete="name"
+                  inputMode="text"
                   required 
                 />
               </div>
@@ -633,6 +717,9 @@ export default function Home() {
                   placeholder="email@example.com" 
                   value={formData.email}
                   onChange={handleFormChange}
+                  autoComplete="email"
+                  inputMode="email"
+                  autoCapitalize="off"
                   required
                 />
               </div>
@@ -645,6 +732,7 @@ export default function Home() {
                   placeholder="Mesajınızı buraya yazın..."
                   value={formData.message}
                   onChange={handleFormChange}
+                  enterKeyHint="send"
                   required
                 ></textarea>
               </div>
@@ -667,7 +755,7 @@ export default function Home() {
         {selectedAlbum && (
           <AlbumModal
             album={selectedAlbum}
-            onClose={() => setSelectedAlbum(null)}
+            onClose={closeAlbum}
           />
         )}
         {isHakkimdaOpen && (
@@ -675,7 +763,6 @@ export default function Home() {
         )}
       </AnimatePresence>
       <ScrollToTopButton />
-      <Footer />
     </>
   );
 } 

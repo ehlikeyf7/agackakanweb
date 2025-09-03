@@ -5,8 +5,6 @@ import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const processImages = [
-  // This list is created from the files you provided.
-  // Note: File names with special characters or spaces might need encoding, but these look fine.
   '0608 (1)(1).jpg', '0608 (1).jpg', '1.JPG', '2.jpg', '3.jpg', '4.jpg', '5.jpg', 
   '6.jpg', '7 (2).JPG', '7.JPG', '8.jpg', '9.jpg', '10.jpg', '11.jpg', '12.jpg', 
   '13.jpg', '14.jpg', '15 (2).jpg', '15.jpg', '16.JPG', '17.JPEG', '18.JPG', 
@@ -77,4 +75,6 @@ const ProcessPage = () => {
   );
 };
 
-export default ProcessPage; 
+export default ProcessPage;
+
+

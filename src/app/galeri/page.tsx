@@ -61,7 +61,7 @@ const GalleryPage = () => {
               onClick={() => setSelectedImage(instrument.imageUrl)}
             >
               <div className="relative w-full h-72">
-                 <Image src={instrument.imageUrl} alt={instrument.title} layout="fill" objectFit="cover" className="group-hover:scale-105 transition-transform duration-300"/>
+                 <Image src={instrument.imageUrl} alt={instrument.title} fill style={{ objectFit: 'cover' }} className="group-hover:scale-105 transition-transform duration-300"/>
               </div>
               <div className="p-6">
                 <h2 className="text-2xl font-bold text-primary">{instrument.title}</h2>
@@ -95,3 +95,5 @@ const GalleryPage = () => {
 };
 
 export default GalleryPage;
+
+

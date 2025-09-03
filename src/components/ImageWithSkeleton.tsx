@@ -8,9 +8,11 @@ interface ImageWithSkeletonProps {
   src: string;
   alt: string;
   className?: string;
+  sizes?: string;
+  blurDataURL?: string;
 }
 
-const ImageWithSkeleton: React.FC<ImageWithSkeletonProps> = ({ src, alt, className }) => {
+const ImageWithSkeleton: React.FC<ImageWithSkeletonProps> = ({ src, alt, className, sizes, blurDataURL }) => {
   const [isLoaded, setIsLoaded] = useState(false);
 
   return (
@@ -29,6 +31,9 @@ const ImageWithSkeleton: React.FC<ImageWithSkeletonProps> = ({ src, alt, classNa
         fill
         style={{ objectFit: 'cover' }}
         className={`transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
+        sizes={sizes}
+        placeholder={blurDataURL ? 'blur' : undefined}
+        blurDataURL={blurDataURL}
         onLoad={() => setIsLoaded(true)}
       />
     </div>

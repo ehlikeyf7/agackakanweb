@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import { Inter, Lora, Lato } from "next/font/google";
-import "../styles/globals.css";
-import Navbar from "@/components/Navbar";
+import "@/styles/globals.css";
 import Footer from "@/components/Footer";
 import CustomCursor from '@/components/CustomCursor'
 import { Toaster } from 'react-hot-toast';
+import { Analytics } from '@vercel/analytics/react';
 
 // Configure fonts
 const inter = Inter({ subsets: ["latin"], variable: '--font-inter' });
@@ -20,7 +20,7 @@ const lato = Lato({
   variable: '--font-lato',
 })
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.atolyeagackakan.com';
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.atolyeagackakan.art';
 const title = 'Hasan AŞIROĞLU - Yaylı Çalgı Yapımı, Tamiri ve Restorasyonu';
 const description = 'Hasan AŞIROĞLU tarafından el yapımı keman ve diğer yaylı çalgılar. Keman restorasyonu, yaylı çalgı tamiri ve bakımı konusunda uzman luthier. Geleneksel yöntemlerle modern estetiği birleştiren özgün tasarımlar.';
 const keywords = [
@@ -139,7 +139,11 @@ export default function RootLayout({
           }}
         />
         <main>{children}</main>
+        <Analytics />
+        <Footer />
       </body>
     </html>
   )
-} 
+}
+
+

@@ -81,9 +81,27 @@ const AlbumModal: React.FC<AlbumModalProps> = ({ album, onClose }) => {
         >
           <div className="container mx-auto px-6 py-20">
             <h2 className="text-4xl md:text-5xl font-bold text-center text-primary mb-4">{album.name}</h2>
-            <p className="text-lg text-center text-text-primary/70 mb-12 max-w-3xl mx-auto">{album.description}</p>
+            <p className="text-lg text-center text-text-primary/70 mb-8 max-w-3xl mx-auto">{album.description}</p>
+            
 
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            <div
+              className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
+              onTouchStart={(e) => {
+                // başlangıç noktası sakla
+                const t = e.changedTouches[0];
+                (e.currentTarget as any)._swipeX = t.clientX;
+              }}
+              onTouchEnd={(e) => {
+                const startX = (e.currentTarget as any)._swipeX as number | undefined;
+                if (startX == null) return;
+                const endX = e.changedTouches[0].clientX;
+                const delta = endX - startX;
+                if (Math.abs(delta) > 60) {
+                  // sağa kaydır: önceki, sola kaydır: sonraki
+                  paginate(delta > 0 ? -1 : 1);
+                }
+              }}
+            >
               {album.images.map((media, index) => (
                 <motion.div
                   key={media}
@@ -108,7 +126,7 @@ const AlbumModal: React.FC<AlbumModalProps> = ({ album, onClose }) => {
                       </div>
                     </>
                   ) : (
-                    <ImageWithSkeleton src={media} alt={`${album.name} - ${index + 1}`} />
+                    <ImageWithSkeleton src={media} alt={`${album.name} - ${index + 1}`} sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw" />
                   )}
                 </motion.div>
               ))}
