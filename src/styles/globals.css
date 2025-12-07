@@ -1,0 +1,65 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+}
+
+@layer base {
+  body {
+    @apply bg-background text-text-primary font-sans antialiased selection:bg-primary/30 selection:text-primary;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif font-medium tracking-tight;
+  }
+}
+
+:root {
+  --foreground-rgb: 224, 224, 224;
+  --background-start-rgb: 18, 18, 18;
+  --background-end-rgb: 18, 18, 18;
+} 
+
+@layer components {
+  /* Gelişmiş Odak (Focus) Stilleri */
+  .focusable {
+    @apply transition-all duration-200 ease-in-out;
+  }
+  .focusable:focus-visible {
+    @apply outline-none ring-2 ring-offset-2 ring-accent ring-offset-background;
+  }
+  /* İçerik görünürlüğü optimizasyonu (özellikle büyük bölümler için) */
+  .cv-auto {
+    content-visibility: auto;
+    contain-intrinsic-size: 1000px 800px;
+  }
+  /* Dokunmatik hedef minimum boyut */
+  .tap-target {
+    min-height: 2.75rem; /* 44px */
+    min-width: 2.75rem;
+  }
+  
+  /* Premium Gradient Text Styles */
+  .gradient-text-gold {
+    background: linear-gradient(135deg, #D4AF37 0%, #F5E6C8 25%, #C0A080 50%, #D4AF37 75%, #8B6914 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .gradient-text-gold-subtle {
+    background: linear-gradient(135deg, #C0A080 0%, #E8D5B5 50%, #C0A080 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .gradient-text-warm {
+    background: linear-gradient(135deg, #C0A080 0%, #D4AF37 30%, #F5E6C8 50%, #D4AF37 70%, #C0A080 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+}
