@@ -27,6 +27,11 @@ export default function Navbar() {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
+    useEffect(() => {
+        document.body.style.overflow = isMobileMenuOpen ? 'hidden' : 'unset';
+        return () => { document.body.style.overflow = 'unset'; };
+    }, [isMobileMenuOpen]);
+
     return (
         <>
             <motion.nav
@@ -39,7 +44,7 @@ export default function Navbar() {
                     }`}
             >
                 <div className="container mx-auto px-6 flex items-center justify-between">
-                    <Link href="/" className="z-50 relative group">
+                    <Link href="/#home" className="z-50 relative group" aria-label="Atölye Ağaçkakan ana sayfa">
                         <Logo isScrolled={isScrolled} />
                     </Link>
 
@@ -62,6 +67,8 @@ export default function Navbar() {
                         className="md:hidden text-text-primary z-50 relative p-2 -mr-2 min-w-[48px] min-h-[48px] flex items-center justify-center"
                         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                         aria-label="Menü"
+                        aria-expanded={isMobileMenuOpen}
+                        aria-controls="mobile-menu"
                     >
                         {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
                     </button>
@@ -77,6 +84,7 @@ export default function Navbar() {
                         exit={{ opacity: 0, x: '100%' }}
                         transition={{ type: 'tween', duration: 0.4 }}
                         className="fixed inset-0 z-40 bg-background/95 backdrop-blur-xl md:hidden flex items-center justify-center"
+                        id="mobile-menu"
                     >
                         <div className="flex flex-col items-center gap-8">
                             {navLinks.map((link) => (

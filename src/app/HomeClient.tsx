@@ -311,7 +311,6 @@ export default function HomeClient() {
   // Parallax effect for Hero
   const { scrollY } = useScroll();
   const y1 = useTransform(scrollY, [0, 500], [0, 200]);
-  const opacity = useTransform(scrollY, [0, 300], [1, 0]);
 
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -347,10 +346,10 @@ export default function HomeClient() {
   };
 
   const instagramPosts = [
-    { videoSrc: '/videos/2024_Messiah.mp4', posterSrc: '', postUrl: 'https://www.instagram.com/atolye_agackakann/', description: "2024 'Messiah' Kemanı" },
+    { videoSrc: '/videos/2024_Messiah.mp4', postUrl: 'https://www.instagram.com/atolye_agackakann/', description: "2024 'Messiah' Kemanı" },
     { videoSrc: '/videos/Restorasyon.mp4', postUrl: 'https://www.instagram.com/atolye_agackakann/', description: "Restorasyon Süreci" },
     { videoSrc: '/videos/Varnish.mp4', postUrl: 'https://www.instagram.com/atolye_agackakann/', description: "Cila Aşaması" },
-    { videoSrc: '/videos/Violin_f_hole.mp4', posterSrc: '', postUrl: 'https://www.instagram.com/atolye_agackakann/', description: "F deliği kesimi" },
+    { videoSrc: '/videos/Violin_f_hole.mp4', postUrl: 'https://www.instagram.com/atolye_agackann/', description: "F deliği kesimi" },
   ];
 
   useEffect(() => {
@@ -367,7 +366,9 @@ export default function HomeClient() {
   }, [searchParams]);
 
   useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
     checkMobile();
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
@@ -419,37 +420,40 @@ export default function HomeClient() {
       <Navbar />
 
       {/* Modern Hero Section */}
-      <section id="home" className="relative h-screen w-full overflow-hidden flex items-center justify-center">
+      <section id="home" className="relative min-h-[100svh] w-full overflow-hidden flex items-center justify-center">
         {/* Slideshow Background with Parallax */}
         <motion.div
           style={{ y: y1 }}
           className="absolute inset-0 z-0"
         >
           {/* Overlay gradients */}
-          <div className="absolute inset-0 bg-black/40 z-10" />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-background z-10" />
+          <div className="absolute inset-0 bg-black/45 z-10" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/45 via-black/15 to-background z-10" />
 
           {/* Slideshow Images */}
-          <AnimatePresence mode="wait">
+          {heroImages.map((image, index) => (
             <motion.div
-              key={currentImageIndex}
-              initial={{ opacity: 0, scale: 1.1 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 1.5, ease: "easeInOut" }}
-              className="absolute inset-0"
+              key={image}
+              initial={false}
+              animate={{
+                opacity: index === currentImageIndex ? 1 : 0,
+                scale: 1,
+              }}
+              transition={{ duration: reduceMotion ? 0.6 : 3.4, ease: "easeInOut" }}
+              className="absolute inset-0 bg-background"
             >
               <Image
-                src={heroImages[currentImageIndex]}
+                src={image}
                 alt="Atölye Ağaçkakan"
                 fill
                 className="object-cover object-center"
-                priority={currentImageIndex === 0}
+                priority={index === 0}
+                loading={index === 0 ? 'eager' : 'lazy'}
                 quality={85}
                 sizes="100vw"
               />
             </motion.div>
-          </AnimatePresence>
+          ))}
 
           {/* Slideshow Indicators */}
           <div className="absolute bottom-24 left-1/2 -translate-x-1/2 z-20 flex gap-2">
@@ -467,34 +471,15 @@ export default function HomeClient() {
           </div>
         </motion.div>
 
-        {/* Watermark Logo - Large, Semi-transparent */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 0.06, scale: 1 }}
-          transition={{ duration: 1.5, delay: 0.5 }}
-          className="absolute inset-0 z-15 flex items-center justify-center pointer-events-none"
-        >
-          <div className="relative w-[50vw] h-[50vw] max-w-[400px] max-h-[400px] md:w-[40vw] md:h-[40vw] md:max-w-[500px] md:max-h-[500px]">
-            <Image
-              src="/images/logo_transparent.png"
-              alt=""
-              fill
-              className="object-contain"
-              sizes="(max-width: 768px) 50vw, 40vw"
-            />
-          </div>
-        </motion.div>
-
         {/* Hero Content */}
         <motion.div
-          style={{ opacity }}
-          className="relative z-20 text-center px-4 max-w-4xl mx-auto"
+          className="relative z-20 text-center px-4 max-w-4xl mx-auto rounded-3xl bg-black/10 py-6 backdrop-blur-[1px] sm:bg-transparent sm:py-0 sm:backdrop-blur-none"
         >
           <motion.h1
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.2 }}
-            className="font-serif text-3xl sm:text-4xl md:text-6xl lg:text-7xl mb-4 md:mb-6 tracking-tight gradient-text-gold"
+            className="font-serif text-4xl sm:text-4xl md:text-6xl lg:text-7xl mb-4 md:mb-6 tracking-tight gradient-text-gold drop-shadow-[0_2px_18px_rgba(0,0,0,0.7)]"
           >
             Atölye Ağaçkakan
           </motion.h1>
@@ -502,10 +487,31 @@ export default function HomeClient() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.5 }}
-            className="font-serif text-base md:text-xl lg:text-2xl text-gray-200 font-light tracking-wide max-w-2xl mx-auto px-2"
+            className="font-serif text-base md:text-xl lg:text-2xl text-gray-100 font-light tracking-wide max-w-2xl mx-auto px-2 drop-shadow-[0_2px_12px_rgba(0,0,0,0.85)]"
           >
             Geleneksel el işçiliği ve modern estetiğin buluştuğu, tınısı ve karakteriyle eşsiz yaylı enstrümanlar.
           </motion.p>
+          <motion.div
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.75 }}
+            className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3"
+          >
+            <a
+              href="#calgilar"
+              className="w-full sm:w-auto inline-flex items-center justify-center rounded-full bg-primary px-7 py-3 text-sm font-semibold uppercase tracking-[0.18em] text-background shadow-2xl shadow-black/20 transition-all duration-300 hover:bg-accent active:scale-95"
+              data-cursor-hover="true"
+            >
+              Portfolyoyu İncele
+            </a>
+            <a
+              href="#iletisim"
+              className="w-full sm:w-auto inline-flex items-center justify-center rounded-full border border-white/15 bg-white/5 px-7 py-3 text-sm font-semibold uppercase tracking-[0.18em] text-white backdrop-blur-md transition-all duration-300 hover:border-primary/50 hover:text-primary active:scale-95"
+              data-cursor-hover="true"
+            >
+              İletişime Geç
+            </a>
+          </motion.div>
         </motion.div>
 
         {/* Scroll Indicator */}
@@ -515,15 +521,15 @@ export default function HomeClient() {
           transition={{ delay: 1.5, duration: 1 }}
           className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20"
         >
-          <div className="flex flex-col items-center gap-2">
+          <a href="#hakkimda" className="flex flex-col items-center gap-2 transition-opacity hover:opacity-80" aria-label="Sayfayı keşfet">
             <span className="text-xs uppercase tracking-widest text-white/60">Keşfet</span>
             <motion.div
               animate={{ y: [0, 10, 0] }}
-              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+              transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
             >
               <FaArrowDown className="text-white/60 text-xl" />
             </motion.div>
-          </div>
+          </a>
         </motion.div>
       </section>
 
@@ -606,7 +612,6 @@ export default function HomeClient() {
                 <InstagramPost
                   isMobile={isMobile}
                   videoSrc={post.videoSrc}
-                  posterSrc={post.posterSrc}
                   postUrl={post.postUrl}
                   username="atolye_agackakann"
                   description={post.description}
@@ -642,14 +647,14 @@ export default function HomeClient() {
         <div className="container mx-auto px-6">
           <div className="grid md:grid-cols-2 gap-16 items-center max-w-6xl mx-auto">
             <div>
-              <h2 className="font-serif text-4xl md:text-5xl mb-6 gradient-text-gold">İletişime Geçin</h2>
+              <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl mb-5 sm:mb-6 gradient-text-gold">İletişime Geçin</h2>
               <p className="text-text-secondary text-lg mb-8 font-light leading-relaxed">
                 Özel siparişleriniz, restorasyon talepleriniz veya sadece tanışmak için...<br />
                 Atölyemizin kapısı sanata değer veren herkese açıktır.
               </p>
             </div>
 
-            <div className="bg-background p-8 md:p-10 rounded-2xl shadow-2xl border border-white/5">
+            <div className="bg-background p-5 sm:p-8 md:p-10 rounded-2xl shadow-2xl border border-white/5">
               <form onSubmit={handleFormSubmit} className="space-y-6">
                 {/* Honeypot field */}
                 <div className="hidden" aria-hidden="true">

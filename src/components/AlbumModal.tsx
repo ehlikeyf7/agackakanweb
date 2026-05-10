@@ -73,7 +73,7 @@ const AlbumModal: React.FC<AlbumModalProps> = ({ album, onClose }) => {
           <div className="w-24" /> {/* Denge için boşluk */}
         </div>
 
-        <div className="container mx-auto px-4 py-8 max-w-7xl">
+        <div className="container mx-auto px-4 py-6 sm:py-8 max-w-7xl">
           {/* Mobil Başlık */}
           <div className="md:hidden mb-6 text-center">
             <h2 className="text-2xl font-serif text-primary mb-2">{album.name}</h2>
@@ -89,7 +89,7 @@ const AlbumModal: React.FC<AlbumModalProps> = ({ album, onClose }) => {
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: index * 0.05 }}
-                className="aspect-square relative group cursor-pointer rounded-lg overflow-hidden bg-surface border border-white/5 hover:border-primary/30 transition-colors"
+                className="aspect-square relative group cursor-pointer rounded-lg overflow-hidden bg-surface border border-white/5 hover:border-primary/30 transition-colors focus-within:ring-2 focus-within:ring-primary/70"
                 onClick={() => setSelectedMediaIndex(index)}
               >
                 {isVideo(media) ? (
@@ -110,7 +110,7 @@ const AlbumModal: React.FC<AlbumModalProps> = ({ album, onClose }) => {
                 )}
 
                 {/* Hover Overlay */}
-                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                <div className="absolute inset-0 bg-black/30 opacity-100 md:bg-black/40 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                   <ZoomIn className="text-white w-8 h-8" />
                 </div>
               </motion.div>
@@ -126,6 +126,8 @@ const AlbumModal: React.FC<AlbumModalProps> = ({ album, onClose }) => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               className="fixed inset-0 z-[60] bg-black/98 flex flex-col"
+              role="dialog"
+              aria-modal="true"
             >
               {/* Lightbox Üst Bar */}
               <div className="flex justify-between items-center p-4 text-white/80">
@@ -134,7 +136,8 @@ const AlbumModal: React.FC<AlbumModalProps> = ({ album, onClose }) => {
                 </span>
                 <button
                   onClick={() => setSelectedMediaIndex(null)}
-                  className="p-2 hover:bg-white/10 rounded-full transition-colors"
+                  className="p-2 hover:bg-white/10 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-primary"
+                  aria-label="Görüntüyü kapat"
                 >
                   <X size={28} />
                 </button>
@@ -145,9 +148,10 @@ const AlbumModal: React.FC<AlbumModalProps> = ({ album, onClose }) => {
                 {/* Sol Ok */}
                 <button
                   onClick={(e) => { e.stopPropagation(); paginate(-1); }}
-                  className="absolute left-2 md:left-4 p-3 rounded-full bg-white/5 hover:bg-white/20 text-white transition-all z-50 focus:outline-none focus:ring-2 focus:ring-primary"
+                  className="absolute left-2 md:left-4 p-2.5 md:p-3 rounded-full bg-black/30 md:bg-white/5 hover:bg-white/20 text-white transition-all z-50 focus:outline-none focus:ring-2 focus:ring-primary"
+                  aria-label="Önceki görsel"
                 >
-                  <ChevronLeft size={32} />
+                  <ChevronLeft className="w-7 h-7 md:w-8 md:h-8" />
                 </button>
 
                 <motion.div
@@ -169,7 +173,7 @@ const AlbumModal: React.FC<AlbumModalProps> = ({ album, onClose }) => {
                     <div className="relative w-full h-full">
                       <Image
                         src={selectedMedia}
-                        alt="Full screen view"
+                        alt={`${album.name} - ${selectedMediaIndex! + 1}`}
                         fill
                         className="object-contain"
                         sizes="100vw"
@@ -182,9 +186,10 @@ const AlbumModal: React.FC<AlbumModalProps> = ({ album, onClose }) => {
                 {/* Sağ Ok */}
                 <button
                   onClick={(e) => { e.stopPropagation(); paginate(1); }}
-                  className="absolute right-2 md:right-4 p-3 rounded-full bg-white/5 hover:bg-white/20 text-white transition-all z-50 focus:outline-none focus:ring-2 focus:ring-primary"
+                  className="absolute right-2 md:right-4 p-2.5 md:p-3 rounded-full bg-black/30 md:bg-white/5 hover:bg-white/20 text-white transition-all z-50 focus:outline-none focus:ring-2 focus:ring-primary"
+                  aria-label="Sonraki görsel"
                 >
-                  <ChevronRight size={32} />
+                  <ChevronRight className="w-7 h-7 md:w-8 md:h-8" />
                 </button>
               </div>
 
@@ -194,6 +199,7 @@ const AlbumModal: React.FC<AlbumModalProps> = ({ album, onClose }) => {
                   <button
                     key={idx}
                     onClick={() => setSelectedMediaIndex(idx)}
+                    aria-label={`${idx + 1}. görsele geç`}
                     className={`relative flex-shrink-0 h-16 w-16 md:h-20 md:w-20 rounded overflow-hidden transition-all ${selectedMediaIndex === idx
                       ? 'ring-2 ring-primary opacity-100 scale-105'
                       : 'opacity-40 hover:opacity-100'

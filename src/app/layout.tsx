@@ -92,13 +92,7 @@ const jsonLd = {
     "Yaylı Çalgı Tamiri",
     "El Yapımı Keman",
     "El Yapımı Çalgı"
-  ],
-  address: {
-    "@type": "PostalAddress",
-    "addressLocality": "Ankara",
-    "addressCountry": "TR"
-  },
-  telephone: "+90-555-555-5555" // TODO: Gerçek telefon numarası ile değiştirilmeli
+  ]
 };
 
 export default function RootLayout({
